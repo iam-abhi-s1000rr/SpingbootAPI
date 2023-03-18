@@ -3,6 +3,9 @@ package com.basiccrud.eg.demo.service;
 import com.basiccrud.eg.demo.entity.EmployeeData;
 import com.basiccrud.eg.demo.repository.EmpRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -27,11 +30,45 @@ public class EmpServiceImpl implements EmpService{
         newEmpData=empRepository.getReferenceById(empId);
         newEmpData.setEmpName(empData.getEmpName());
         newEmpData.setEmpAddress(empData.getEmpAddress());
+        newEmpData.setEmpDepartment(empData.getEmpDepartment());
         return empRepository.save(newEmpData);
     }
 
     @Override
     public void deleteEmp(long empId) {
         empRepository.deleteById(empId);
+    }
+
+    @Override
+    public EmployeeData updateEmpByDept(EmployeeData empData, String empDepartment) {
+        EmployeeData newEmpByDept=null;
+        newEmpByDept=empRepository.findByEmpDepartment(empDepartment);
+        newEmpByDept.setEmpName(empData.getEmpName());
+        newEmpByDept.setEmpAddress(empData.getEmpAddress());
+        newEmpByDept.setEmpDepartment(empData.getEmpDepartment());
+        return empRepository.save(newEmpByDept);
+    }
+
+    @Override
+    public List<EmployeeData> showEmpAsPerDepartment(String empDepartment) {
+        return empRepository.findAllByEmpDepartment(empDepartment);
+    }
+
+    @Override
+    public List<EmployeeData> saveListEmp(List<EmployeeData> empData) {
+        return empRepository.saveAll(empData);
+    }
+
+    @Override
+    public List<EmployeeData> findEmpBySort(long empId) {
+       return empRepository.findAll(Sort.by( String.valueOf(empId)));
+    }
+
+    @Override
+    public Page<EmployeeData> showEmpByPage(int offset, int pageSize) {
+        Page<EmployeeData>  empDataByPage=null;
+        empDataByPage=empRepository.findAll(PageRequest.of(offset,pageSize));
+
+        return empDataByPage;
     }
 }
