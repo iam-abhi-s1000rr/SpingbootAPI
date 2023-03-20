@@ -21,7 +21,9 @@ public interface EmpService {
 
     List<EmployeeData> saveListEmp(List<EmployeeData> empData);
 
-    List<EmployeeData> findEmpBySort(long empId);
+    List<EmployeeData> findEmpBySort(String field);
 
     Page<EmployeeData> showEmpByPage(int offset, int pageSize);
+
+    Page<EmployeeData> showEmpWithPaginationAndSorting(int offset, int pageSize, String anyField);
 }

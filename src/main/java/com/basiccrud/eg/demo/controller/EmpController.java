@@ -63,9 +63,9 @@ public class EmpController {
     }
 
     // Find data by sorting (asc/desc/field i.e--> name/department/id .. etc)
-   @GetMapping("/showempsort/{id}")
-    public List<EmployeeData> findEmpBySort(@PathVariable("id") long empId){
-        return empService.findEmpBySort(empId);
+   @GetMapping("/showempsort/{anyfield}")
+    public List<EmployeeData> findEmpBySort(@PathVariable("anyfield") String field){
+        return empService.findEmpBySort(field);
     }
 
     //pagination
@@ -73,5 +73,12 @@ public class EmpController {
     public Page<EmployeeData> showEmpByPage(@PathVariable("offset") int offset,
                                             @PathVariable("pageSize") int pageSize){
         return empService.showEmpByPage(offset,pageSize);
+    }
+    //pagination woth sorting
+    @GetMapping("/pageinationwithsort/{offset}/{pageSize}/{Field}")
+    public Page<EmployeeData> showEmpWithPaginationAndSorting(@PathVariable("offset") int offset,
+                                                        @PathVariable("pageSize") int pageSize,
+                                                        @PathVariable("Field")String anyField){
+        return empService.showEmpWithPaginationAndSorting(offset,pageSize,anyField);
     }
 }

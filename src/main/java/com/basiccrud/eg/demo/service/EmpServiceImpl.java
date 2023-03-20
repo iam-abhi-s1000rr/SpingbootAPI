@@ -60,8 +60,8 @@ public class EmpServiceImpl implements EmpService{
     }
 
     @Override
-    public List<EmployeeData> findEmpBySort(long empId) {
-       return empRepository.findAll(Sort.by( String.valueOf(empId)));
+    public List<EmployeeData> findEmpBySort(String field) {
+       return empRepository.findAll(Sort.by(Sort.Direction.ASC,field));
     }
 
     @Override
@@ -70,5 +70,14 @@ public class EmpServiceImpl implements EmpService{
         empDataByPage=empRepository.findAll(PageRequest.of(offset,pageSize));
 
         return empDataByPage;
+    }
+
+    @Override
+    public Page<EmployeeData> showEmpWithPaginationAndSorting(int offset,
+                                                              int pageSize,
+                                                              String anyField) {
+        Page<EmployeeData> pageAndSort =empRepository
+                .findAll(PageRequest.of(offset,pageSize).withSort(Sort.by(anyField)));
+        return pageAndSort;
     }
 }
